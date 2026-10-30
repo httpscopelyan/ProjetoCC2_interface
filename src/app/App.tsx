@@ -1,5 +1,12 @@
 import {AppRouter}  from "./router";
+import SmoothScroll from "./SmoothScroll";
+import { SensorDataProvider } from "./providers/SensorDataProvider";
 
 export default function App() {
-  return <AppRouter />;
+  return (
+    <SensorDataProvider>
+      <SmoothScroll />
+      <AppRouter />
+    </SensorDataProvider>
+  );
 }

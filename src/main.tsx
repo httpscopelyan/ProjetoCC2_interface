@@ -1,7 +1,6 @@
-﻿import React from "react";
+import React from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter } from "react-router";
-import { AppRouter } from "./app/router/index.tsx";
+import { BrowserRouter } from "react-router-dom";
 import App from "./app/App.tsx";
 import { GlobalStyles } from "./app/global.ts";
 
@@ -18,7 +17,7 @@ ReactDOM.createRoot(root).render(
     <React.StrictMode>
     <BrowserRouter>
       <GlobalStyles/>
-      <AppRouter />
+      <App />
     </BrowserRouter>
   </React.StrictMode>
 )

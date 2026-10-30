@@ -1,0 +1,23 @@
+const BASE = import.meta.env.VITE_API_BASE_URL ?? "";
+
+// Mock by default: only an explicit VITE_USE_MOCK=false switches every api module to the real backend.
+export const USE_MOCK = import.meta.env.VITE_USE_MOCK !== "false";
+
+export const delay = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
+
+export async function get<T>(path: string, params?: Record<string, string>): Promise<T> {
+  const query = params ? `?${new URLSearchParams(params).toString()}` : "";
+  const res = await fetch(`${BASE}${path}${query}`);
+  if (!res.ok) throw new Error(`GET ${path} falhou (${res.status})`);
+  return (await res.json()) as T;
+}
+
+export async function post<T>(path: string, body: unknown): Promise<T> {
+  const res = await fetch(`${BASE}${path}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) throw new Error(`POST ${path} falhou (${res.status})`);
+  return (await res.json()) as T;
+}
