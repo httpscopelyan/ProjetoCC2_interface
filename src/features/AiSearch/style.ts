@@ -20,7 +20,6 @@ export const Backdrop = styled(motion.div)`
   background: rgba(0, 0, 0, 0.25);
 `;
 
-// Centers the island without a transform, which would fight the layout animation.
 export const Layer = styled.div`
   position: fixed;
   top: 0;

@@ -2,14 +2,11 @@ import styled, { css } from "styled-components";
 import { colors } from "../../config/theme";
 
 export const glass = css`
-  background: ${colors.surface};
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.05));
   border: 1px solid ${colors.border};
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 4px 16px rgba(0, 0, 0, 0.16);
 `;
 
-// Cheap variant for small chrome (buttons, pills): no backdrop-filter, so no extra backdrop snapshot.
 export const glassFlat = css`
   background: rgba(255, 255, 255, 0.12);
   border: 1px solid ${colors.border};

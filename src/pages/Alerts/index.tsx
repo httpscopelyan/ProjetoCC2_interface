@@ -21,7 +21,6 @@ const Alerts = () => {
   const { alerts, loading } = useAlerts();
   const [filter, setFilter] = useState<Filter>("all");
 
-  // Alerts arrive newest first, so insertion order already keeps the days in order.
   const groups = useMemo(() => {
     const byDay = new Map<string, Alert[]>();
     for (const alert of alerts) {

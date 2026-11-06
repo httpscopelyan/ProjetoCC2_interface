@@ -5,7 +5,6 @@ import CsvExport from "../../features/CsvExport";
 import { clock, dayMonth, salutation } from "../../shared/lib/date";
 import { Actions, Clock, DateLine, Row, Title } from "./style";
 
-// Minute precision is enough, so a 30 s tick keeps this from re-rendering constantly.
 const TICK_MS = 30000;
 
 const Greeting = () => {

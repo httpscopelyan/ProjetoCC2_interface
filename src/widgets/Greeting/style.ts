@@ -17,7 +17,6 @@ export const DateLine = styled.p`
   color: ${colors.muted};
 `;
 
-// Discreet live clock next to the date.
 export const Clock = styled.span`
   font-size: 0.72rem;
   font-variant-numeric: tabular-nums;

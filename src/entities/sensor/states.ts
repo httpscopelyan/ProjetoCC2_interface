@@ -7,8 +7,6 @@ export interface ResolvedState {
   index: number;
 }
 
-// First band the value falls into. Bands with a `when` are compound (e.g. rain AND wind) and are
-// skipped when their condition fails, falling through to the plain bands.
 export const resolveState = (def: SensorDef, value: number, all: Readings): ResolvedState => {
   for (let index = 0; index < def.states.length; index++) {
     const state = def.states[index];
@@ -19,7 +17,6 @@ export const resolveState = (def: SensorDef, value: number, all: Readings): Reso
   return { state: def.states[index], index };
 };
 
-// Band midpoints, used to blend colors continuously instead of jumping at each threshold.
 const bandCenters = (def: SensorDef, bands: SensorState[]) => {
   const edges = bands.slice(0, -1).map((band) => band.max);
   const firstWidth = edges.length > 1 ? edges[1] - edges[0] : Math.abs(edges[0]) || 1;
@@ -29,7 +26,6 @@ const bandCenters = (def: SensorDef, bands: SensorState[]) => {
   return bands.map((_, i) => (lows[i] + highs[i]) / 2);
 };
 
-// Gradual color: slides between neighbouring band colors as the value moves between their centers.
 export const stateColor = (def: SensorDef, value: number, all: Readings): string => {
   const { state } = resolveState(def, value, all);
   if (state.when) return state.color;
@@ -45,7 +41,6 @@ export const stateColor = (def: SensorDef, value: number, all: Readings): string
   return mixHex(bands[i].color, bands[i + 1].color, t);
 };
 
-// Real variation between the first and last reading of the series.
 export const changePct = (points: SeriesPoint[]): number => {
   if (points.length < 2) return 0;
   const first = points[0].value;

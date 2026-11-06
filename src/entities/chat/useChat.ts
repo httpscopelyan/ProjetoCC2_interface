@@ -14,7 +14,6 @@ const welcome: ChatMessage = {
 export const useChat = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([welcome]);
   const [typing, setTyping] = useState(false);
-  // Refs mirror the state so send() always sees the latest thread and cannot be fired twice while waiting.
   const thread = useRef<ChatMessage[]>([welcome]);
   const busy = useRef(false);
 

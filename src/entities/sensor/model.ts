@@ -3,11 +3,11 @@ import type { SensorId } from "../../shared/config/sensors";
 export interface SensorReading {
   sensorId: SensorId;
   value: number;
-  at: string; // ISO
+  at: string;
 }
 
 export interface SeriesPoint {
-  at: string; // ISO
+  at: string;
   value: number;
 }
 

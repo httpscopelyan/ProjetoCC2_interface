@@ -1,6 +1,5 @@
 const BASE = import.meta.env.VITE_API_BASE_URL ?? "";
 
-// Mock by default: only an explicit VITE_USE_MOCK=false switches every api module to the real backend.
 export const USE_MOCK = import.meta.env.VITE_USE_MOCK !== "false";
 
 export const delay = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));

@@ -8,5 +8,5 @@ export interface Alert {
   severity: AlertSeverity;
   title: string;
   message: string;
-  at: string; // ISO
+  at: string;
 }

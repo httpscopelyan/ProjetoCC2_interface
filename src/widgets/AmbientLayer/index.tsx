@@ -8,7 +8,6 @@ import { useSensorData } from "../../entities/sensor/context";
 import { stateColor } from "../../entities/sensor/states";
 import { Drop, EdgeGlow, Gust, Particles, Root, Tint } from "./style";
 
-// The glow is off inside the "Agradável" band (16–24 °C) and grows the further the temperature drifts from it.
 const glowIntensity = (temperature: number) => {
   if (temperature < 16) return Math.min(1, (16 - temperature) / 10);
   if (temperature > 24) return Math.min(1, (temperature - 24) / 8);
@@ -17,7 +16,6 @@ const glowIntensity = (temperature: number) => {
 
 const rainCount = (rain: number) => (rain >= 10 ? 60 : rain >= 2 ? 40 : rain >= 0.1 ? 22 : 0);
 
-// Deterministic spread (no Math.random in render), so the drops don't jump between renders.
 const spread = (count: number, scale: number, offset = 0) =>
   Array.from({ length: count }, (_, i) => ((i * scale + offset) % 100) / 100);
 
@@ -37,7 +35,6 @@ const AmbientLayer = () => {
   const intensity = temperature === undefined ? 0 : glowIntensity(temperature);
 
   const drops = rainCount(live.rain ?? 0);
-  // TODO(backend): use only windSpeed once the ESP32 sends it; until then air quality is the stand-in.
   const windy = (live.windSpeed ?? 0) >= 15 || (live.windSpeed === undefined && (live.airQuality ?? 0) >= 50);
 
   const dropStyles = useMemo(() => {

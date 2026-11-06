@@ -14,8 +14,6 @@ interface RevealProps {
   children: ReactNode;
 }
 
-// Only transform is animated: opacity on an ancestor disables the children's backdrop-filter,
-// which would make the glass cards lose their blur until the animation ends.
 const Reveal = ({ order = 0, children }: RevealProps) => {
   const box = useRef<HTMLDivElement>(null);
   const reduceMotion = useReducedMotion();
@@ -35,12 +33,10 @@ const Reveal = ({ order = 0, children }: RevealProps) => {
     const { top, height } = el.getBoundingClientRect();
 
     if (top < window.innerHeight) {
-      // Visible on load: leaves from the top edge of the screen and settles into place.
       const fromY = -Math.max(top + height, 80);
       park(fromY);
       controls = play(fromY, BASE_DELAY + order * STEP);
     } else {
-      // Below the fold: rises into place when it is scrolled into view.
       park(60);
       observer = new IntersectionObserver(
         ([entry]) => {

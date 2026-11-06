@@ -31,7 +31,6 @@ const labelFor = (iso: string, period: Period, day: string | null) => {
   return monthFormat.format(d).replace(".", "");
 };
 
-// 1, 2 or 5 times a power of ten, so axis ticks land on round numbers.
 const niceStep = (span: number) => {
   const raw = Math.max(span, 1e-6) / 5;
   const power = 10 ** Math.floor(Math.log10(raw));
@@ -97,7 +96,6 @@ const SensorChart = () => {
               <span key={tick}>{formatNumber({ ...def, decimals: tick % 1 === 0 ? 0 : def.decimals }, tick)}</span>
             ))}
           </YAxis>
-          {/* keyed so the bars grow again whenever the sensor, period or day changes */}
           <Bars key={`${selectedId}-${period}-${day}`} $count={points.length}>
             {points.map((point, i) => {
               const label = labelFor(point.at, period, day);

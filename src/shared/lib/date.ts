@@ -16,7 +16,6 @@ export const clock = (d: Date) => clockFormat.format(d);
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
-// Local calendar day as YYYY-MM-DD (not UTC, so it matches what the user sees).
 export const isoDay = (d: Date) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 
 export const parseIsoDay = (iso: string) => {

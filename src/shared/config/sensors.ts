@@ -24,28 +24,27 @@ import type { LucideIcon } from "lucide-react";
 export type SensorId = "temperature" | "humidity" | "pressure" | "airQuality" | "luminosity" | "rain";
 export type Period = "now" | "week" | "month" | "year";
 
-// windSpeed is not a card yet; it only exists so compound states can check it once the backend sends it.
 export type Readings = Partial<Record<SensorId | "windSpeed", number>>;
 
 export interface SensorState {
-  max: number; // exclusive upper bound; the last band uses Infinity
+  max: number;
   icon: LucideIcon;
   color: string;
   label: string;
-  range: string; // pt-BR range text for the help tooltip
-  when?: (all: Readings) => boolean; // compound condition, checked in addition to max
+  range: string;
+  when?: (all: Readings) => boolean;
 }
 
 export interface SensorDef {
   id: SensorId;
   title: string;
-  icon: LucideIcon; // representative icon, used where there is no live state (alerts, search)
+  icon: LucideIcon;
   unit: string;
   decimals: number;
-  floor?: number; // natural lower bound of the measurement (e.g. 0 for humidity)
-  states: SensorState[]; // ascending by max
+  floor?: number;
+  states: SensorState[];
   help: string;
-  aliases: string[]; // normalized words the AI search matches against
+  aliases: string[];
 }
 
 export const SENSOR_DEFS: SensorDef[] = [
@@ -136,7 +135,6 @@ export const SENSOR_DEFS: SensorDef[] = [
     aliases: ["chuva", "chovendo", "chuvoso"],
     states: [
       {
-        // TODO(backend): needs a real wind-speed reading (windSpeed, km/h). Never matches until the ESP32 sends it.
         max: Infinity,
         icon: CloudRainWind,
         color: "#3b82f6",

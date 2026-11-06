@@ -9,7 +9,6 @@ const toRgb = (hex: string): [number, number, number] => {
 
 const toHex = (channel: number) => Math.round(channel).toString(16).padStart(2, "0");
 
-// Linear RGB interpolation between two #rrggbb colors; t is clamped to 0..1.
 export const mixHex = (a: string, b: string, t: number): string => {
   const k = Math.min(1, Math.max(0, t));
   const [ar, ag, ab] = toRgb(a);

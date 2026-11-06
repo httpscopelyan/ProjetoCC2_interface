@@ -14,7 +14,6 @@ const CsvExport = () => {
     const points = seriesBySensor[selectedId]?.points ?? [];
     const now = new Date().toLocaleString("pt-BR");
 
-    // The selected sensor's series for the current view; with no series yet, the current value of every sensor.
     const rows =
       points.length > 0
         ? points.map((p) => ({

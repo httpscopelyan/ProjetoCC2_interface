@@ -1,75 +1,85 @@
-# React + TypeScript + Vite
+# Dashboard de Sensores
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Dashboard em React para monitorar sensores ambientais (temperatura, umidade, chuva, qualidade do ar etc.), com estados por faixa de valor, efeitos de ambiente, gráficos por período, alertas, chat e exportação em CSV.
 
-Currently, two official plugins are available:
+Por padrão o projeto roda com **dados simulados (mock)**. Não precisa de backend, banco ou hardware para ver o design.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Requisitos
 
-## React Compiler
+- [Node.js](https://nodejs.org/) 20 ou superior (inclui o npm)
+- [Git](https://git-scm.com/)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Para conferir o que você já tem:
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+node -v
+npm -v
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+## Como rodar
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```bash
+git clone <URL-DO-REPOSITORIO>
+cd dashboard
+npm install
+npm run dev
+```
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Abra o endereço que o terminal mostrar, normalmente <http://localhost:5173>.
+
+Não é preciso criar nenhum arquivo `.env`: sem ele, o modo mock já fica ativo.
+
+## Scripts
+
+| Comando           | O que faz                                          |
+| ----------------- | -------------------------------------------------- |
+| `npm run dev`     | Servidor de desenvolvimento com recarga automática |
+| `npm run build`   | Checa os tipos e gera a versão de produção em `dist/` |
+| `npm run preview` | Serve localmente a build de produção               |
+| `npm run lint`    | Roda o ESLint                                      |
+
+## Dados simulados e backend real
+
+As variáveis ficam no `.env.example`:
+
+```env
+VITE_API_BASE_URL=http://localhost:3000
+VITE_USE_MOCK=true
+```
+
+- `VITE_USE_MOCK=true` (padrão): usa os dados simulados.
+- Para usar um backend real, copie `.env.example` para `.env`, defina `VITE_USE_MOCK=false` e aponte `VITE_API_BASE_URL` para a API.
+
+Endpoints esperados:
+
+- `GET /api/sensors/latest`
+- `GET /api/sensors/:id/series?period=now|week|month|year&day=YYYY-MM-DD`
+- `GET /api/sensors/available-days`
+- `GET /api/alerts`
+- `POST /api/chat` com `{ messages }`, que responde `{ reply }`
+
+Para forçar um valor no mock (por exemplo, ver o efeito de chuva), edite `src/shared/api/mock/sensors.ts`.
+
+## Tecnologias
+
+React 19, TypeScript, Vite, styled-components, Framer Motion, Lenis (scroll suave), React Router e Lucide Icons.
+
+## Estrutura
+
+O projeto segue a arquitetura Feature-Sliced Design:
 
 ```
+src/
+  app/        providers, rotas e layout base
+  pages/      Initial, Alerts, Chat
+  widgets/    blocos de tela (gráfico, sidebar, chat, ambiente...)
+  features/   interações (busca com IA, seletor de data, exportar CSV...)
+  entities/   modelos e hooks de sensor, alerta e chat
+  shared/     UI base, API, configuração dos sensores e utilitários
+```
+
+## Problemas comuns
+
+- **Porta ocupada:** o Vite escolhe a próxima porta livre e mostra no terminal.
+- **Erro no `npm install`:** confirme que o Node é 20 ou superior e tente de novo.
+- **Animações pesadas:** o design usa efeitos de ambiente e transições. Em computadores mais fracos, feche outras abas ou use `npm run build && npm run preview`, que é mais leve que o modo dev.

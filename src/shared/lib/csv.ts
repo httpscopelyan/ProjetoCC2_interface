@@ -1,7 +1,6 @@
 type Cell = string | number;
 
 const escape = (cell: Cell) => {
-  // pt-BR Excel: decimal comma and ';' separator.
   const text = typeof cell === "number" ? String(cell).replace(".", ",") : cell;
   return /[";\n]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text;
 };
@@ -14,7 +13,6 @@ export const toCsv = (rows: Record<string, Cell>[]): string => {
 };
 
 export const downloadCsv = (filename: string, csv: string) => {
-  // BOM so Excel reads accents as UTF-8.
   const blob = new Blob(["﻿", csv], { type: "text/csv;charset=utf-8" });
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");

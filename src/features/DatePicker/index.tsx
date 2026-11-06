@@ -9,7 +9,6 @@ import { Anchor, Clear, Day, Footer, Grid, Month, Nav, Popover, Top, Weekday } f
 
 const monthFormat = new Intl.DateTimeFormat("pt-BR", { month: "long", year: "numeric" });
 const weekdayFormat = new Intl.DateTimeFormat("pt-BR", { weekday: "narrow" });
-// 2023-01-01 was a Sunday, so these are the weekday initials in Sunday-first order.
 const weekdays = Array.from({ length: 7 }, (_, i) => weekdayFormat.format(new Date(2023, 0, 1 + i)));
 
 const DatePicker = () => {
@@ -81,7 +80,6 @@ const DatePicker = () => {
               ))}
               {Array.from({ length: total }, (_, i) => {
                 const iso = isoDay(new Date(year, month, i + 1));
-                // Only days that have captured data, and never the future.
                 const enabled = available.has(iso) && iso <= today;
                 return (
                   <Day

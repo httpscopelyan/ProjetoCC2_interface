@@ -2,13 +2,12 @@ import type { Period, SensorId } from "../../config/sensors";
 import { isoDay } from "../../lib/date";
 import type { SensorReading, SensorSeries, SeriesPoint } from "../../../entities/sensor/model";
 
-// Set a value here to force it in the mock (e.g. { rain: 5 } to see the rain effect).
 const OVERRIDES: Partial<Record<SensorId, number>> = {};
 
 interface Profile {
   base: number;
-  diurnal: number; // amplitude of the daily cycle (peaks around 15h)
-  drift: number; // day-to-day variation
+  diurnal: number;
+  drift: number;
   noise: number;
   min: number;
   max: number;
@@ -21,7 +20,6 @@ const PROFILES: Record<Exclude<SensorId, "luminosity" | "rain">, Profile> = {
   airQuality: { base: 45, diurnal: 12, drift: 14, noise: 4, min: 5, max: 200 },
 };
 
-// Stable pseudo-random number in [0, 1) for a string key (FNV-1a + mulberry32).
 const rand = (key: string) => {
   let h = 2166136261;
   for (let i = 0; i < key.length; i++) h = Math.imul(h ^ key.charCodeAt(i), 16777619);

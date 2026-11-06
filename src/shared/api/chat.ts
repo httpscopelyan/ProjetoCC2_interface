@@ -9,7 +9,6 @@ const normalize = (text: string) =>
     .normalize("NFD")
     .replace(/[̀-ͯ]/g, "");
 
-// Stub reply: answers current-value questions from the mock and says the rest is not connected yet.
 const stubReply = (question: string) => {
   const q = normalize(question);
   const def = SENSOR_DEFS.find((d) => d.aliases.some((alias) => q.includes(alias)));
@@ -24,8 +23,6 @@ const stubReply = (question: string) => {
 };
 
 export const chatApi = {
-  // POST /api/chat { messages } -> { reply: string }
-  // TODO(llm): connect the real provider here (this is the only file that needs to change).
   async send(messages: ChatMessage[]): Promise<string> {
     if (USE_MOCK) {
       await delay(700);

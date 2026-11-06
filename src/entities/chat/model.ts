@@ -2,5 +2,5 @@ export interface ChatMessage {
   id: string;
   role: "user" | "assistant";
   text: string;
-  at: string; // ISO
+  at: string;
 }

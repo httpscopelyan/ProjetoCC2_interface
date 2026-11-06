@@ -23,7 +23,6 @@ const ChatPanel = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Question handed over by the AI search island: send it once, then clear it so a refresh does not resend.
   useEffect(() => {
     const q = (location.state as { q?: string } | null)?.q;
     if (!q || handedOff.current) return;
@@ -71,7 +70,6 @@ const ChatPanel = () => {
         <Badge>Online</Badge>
       </Head>
 
-      {/* data-lenis-prevent: lets this box scroll on its own instead of the smooth page scroll */}
       <Thread ref={thread} data-lenis-prevent>
         <DayDivider>Hoje</DayDivider>
         {messages.map((message) => (

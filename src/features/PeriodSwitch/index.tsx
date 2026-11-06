@@ -15,7 +15,6 @@ const PeriodSwitch = () => {
   return (
     <Group role="tablist">
       {options.map(({ value, label }) => {
-        // A selected day overrides the period, so no tab is active while one is picked.
         const active = !day && period === value;
         return (
           <Option

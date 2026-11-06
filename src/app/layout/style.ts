@@ -6,13 +6,14 @@ export const Shell = styled.div`
     padding: 1.5rem 1.5rem 2rem 5.5rem;
     isolation: isolate;
 
-    /* fixed layer instead of background-attachment: fixed, which repaints on every scroll frame */
     &::before {
         content: "";
         position: fixed;
         inset: 0;
         z-index: -1;
-        background-image: url(${backgroundss});
+        background-image:
+            linear-gradient(to bottom, rgba(8, 9, 12, 0.35), rgba(8, 9, 12, 0.8)),
+            url(${backgroundss});
         background-repeat: no-repeat;
         background-size: cover;
         background-position: center;

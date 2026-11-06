@@ -11,7 +11,6 @@ const StatsOverview = () => {
   const { readings, seriesBySensor } = useSensorData();
   const { selectedId, setSelectedId } = useSensorControls();
 
-  // Leaving the page must not leave the hover tint behind (mouseleave never fires on unmount).
   useEffect(() => () => setAmbientTint(null), []);
 
   return (

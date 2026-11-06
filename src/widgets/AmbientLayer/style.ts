@@ -10,7 +10,6 @@ const drift = keyframes`
   to { transform: translate3d(125vw, 0, 0); }
 `;
 
-// Sits between the page background (::before, z -1) and the content; never intercepts the pointer.
 export const Root = styled.div`
   position: fixed;
   inset: 0;
@@ -19,14 +18,12 @@ export const Root = styled.div`
   pointer-events: none;
 `;
 
-// Heat/cold glow around the edges. box-shadow (not a gradient) so the color cross-fades.
 export const EdgeGlow = styled.div`
   position: absolute;
   inset: 0;
   transition: box-shadow 1.2s ease, opacity 1.2s ease;
 `;
 
-// Very faint wash of the hovered card's state color over the whole page.
 export const Tint = styled.div`
   position: absolute;
   inset: 0;

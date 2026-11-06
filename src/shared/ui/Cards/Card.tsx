@@ -28,7 +28,6 @@ const StatsCard = ({ def, value, all, series, selected, onSelect, onHoverChange 
   const positive = change >= 0;
   const Arrow = positive ? TrendingUp : TrendingDown;
   const Icon = state.icon;
-  // Bands can share an icon (e.g. Thermometer for "Agradável" and "Quente"); only a real icon change cross-fades.
   const iconKey = Icon.displayName ?? state.label;
 
   const onKeyDown = (e: KeyboardEvent) => {

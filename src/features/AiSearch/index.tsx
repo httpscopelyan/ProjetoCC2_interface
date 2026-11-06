@@ -21,7 +21,6 @@ const normalize = (text: string) =>
 
 const QUESTION_WORDS = /\b(que|qual|quais|como|quando|por que|porque|media|ontem|hoje|amanha|hora|horas|semana|mes|ano)\b/;
 
-// Questions and time references go to the chatbot; plain sensor names are answered locally.
 const isQuestion = (q: string) => q.includes("?") || /\d/.test(q) || QUESTION_WORDS.test(q);
 
 const matches = (def: SensorDef, q: string) =>
@@ -58,7 +57,6 @@ const AiSearch = () => {
   const goToSensor = (def: SensorDef) => {
     setSelectedId(def.id);
     close();
-    // Wait for the island to start shrinking before scrolling the card into view.
     setTimeout(() => {
       document.getElementById(`sensor-${def.id}`)?.scrollIntoView({ behavior: "smooth", block: "center" });
     }, 250);
@@ -76,7 +74,6 @@ const AiSearch = () => {
     else if (askAi) goToChat();
   };
 
-  // Slow, harmonic spring: the island grows out of the icon and shrinks back into it.
   const spring = reduceMotion ? { duration: 0 } : { type: "spring" as const, stiffness: 180, damping: 26, mass: 1.1 };
 
   return (

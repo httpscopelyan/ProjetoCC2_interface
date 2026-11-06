@@ -2,13 +2,11 @@ import { createContext, useContext } from "react";
 import type { Period, Readings, SensorId } from "../../shared/config/sensors";
 import type { SensorSeries } from "./model";
 
-// Two contexts on purpose: controls change on clicks/hover, data changes on fetches; splitting them
-// keeps one from re-rendering the other's consumers.
 export interface SensorData {
-  readings: Readings; // what the cards show: latest reading in "now" mode, otherwise the average of the series
-  live: Readings; // always the latest reading (drives the ambient effects)
+  readings: Readings;
+  live: Readings;
   seriesBySensor: Partial<Record<SensorId, SensorSeries>>;
-  availableDays: string[]; // YYYY-MM-DD days that have captured data
+  availableDays: string[];
   loading: boolean;
   error: string | null;
 }

@@ -11,7 +11,6 @@ const StateHelp = ({ def, activeIndex }: StateHelpProps) => {
   const id = `state-help-${def.id}`;
 
   return (
-    // stopPropagation: opening the help must not select the card underneath.
     <Wrapper onClick={(e) => e.stopPropagation()}>
       <Trigger type="button" aria-label={`O que significam os estados de ${def.title}`} aria-describedby={id}>
         <CircleAlert size={13} />

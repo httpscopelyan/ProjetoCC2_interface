@@ -6,7 +6,6 @@ import SensorChart from "../../widgets/SensorChart";
 import AlertsPanel from "../../widgets/AlertsPanel";
 import { Content, Grid, Span } from "./style"
 
-// Reveal orders: header 0, greeting 1, the six sensor cards 2-7, then the grid.
 const Index = () => {
     return (
         <>

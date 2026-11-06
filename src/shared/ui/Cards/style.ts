@@ -16,10 +16,9 @@ export const Card = styled(motion.div)<{ $color: string; $selected: boolean }>`
   outline: none;
   border-color: ${({ $selected }) => ($selected ? "rgba(255, 255, 255, 0.55)" : colors.border)};
   box-shadow: ${({ $selected }) =>
-    $selected ? "0 0 0 1px rgba(255, 255, 255, 0.2) inset, 0 4px 16px rgba(0, 0, 0, 0.16)" : "0 4px 16px rgba(0, 0, 0, 0.16)"};
+    $selected ? "0 0 0 1px rgba(255, 255, 255, 0.2) inset, 0 4px 16px rgba(0, 0, 0, 0.16)" : "inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 4px 16px rgba(0, 0, 0, 0.16)"};
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 
-  /* faint wash in the sensor's state color; a flat color so it can cross-fade smoothly */
   &::before {
     content: "";
     position: absolute;
@@ -31,7 +30,6 @@ export const Card = styled(motion.div)<{ $color: string; $selected: boolean }>`
     transition: background-color 0.6s ease;
   }
 
-  /* lifts the card (and its help tooltip) above its neighbours */
   &:hover,
   &:focus-within {
     z-index: 20;

@@ -61,7 +61,6 @@ export const DayHeading = styled.h2`
   font-weight: 600;
   color: ${colors.muted};
 
-  /* only the first letter: "capitalize" would also turn "de" into "De" */
   &::first-letter {
     text-transform: uppercase;
   }

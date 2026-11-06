@@ -24,10 +24,8 @@ export const SensorDataProvider = ({ children }: { children: ReactNode }) => {
   const [error, setError] = useState<string | null>(null);
 
   const viewKey = `${period}|${day ?? ""}`;
-  // Loading is derived: the series on screen belong to a view other than the one being asked for.
   const loading = loadedKey !== viewKey;
 
-  // Picking a period leaves "single day" mode.
   const setPeriod = useCallback((next: Period) => {
     setPeriodState(next);
     setDay(null);
@@ -72,7 +70,6 @@ export const SensorDataProvider = ({ children }: { children: ReactNode }) => {
     };
   }, [fetchSeries, viewKey]);
 
-  // Live polling: pauses while the tab is hidden and refreshes as soon as it comes back.
   useEffect(() => {
     let cancelled = false;
     const realtime = period === "now" && !day;

@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { alertsApi } from "../../shared/api/alerts";
 import type { Alert } from "./model";
 
-// Alerts sorted newest first.
 export const useAlerts = () => {
   const [alerts, setAlerts] = useState<Alert[]>([]);
   const [loading, setLoading] = useState(true);

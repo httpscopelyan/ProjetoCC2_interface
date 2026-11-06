@@ -17,6 +17,7 @@ export const Popover = styled(motion.div)`
   padding: 1rem;
   border-radius: 1.25rem;
   transform-origin: top left;
+  background: rgba(20, 22, 26, 0.92);
 `;
 
 export const Top = styled.div`
