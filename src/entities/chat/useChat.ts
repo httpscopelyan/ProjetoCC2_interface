@@ -1,5 +1,7 @@
 import { useCallback, useRef, useState } from "react";
 import { chatApi } from "../../shared/api/chat";
+import { useSensorContext } from "../insight/useSensorContext";
+import { useSettings } from "../settings/context";
 import type { ChatMessage } from "./model";
 
 const id = () => `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
@@ -12,6 +14,8 @@ const welcome: ChatMessage = {
 };
 
 export const useChat = () => {
+  const { localAi } = useSettings();
+  const context = useSensorContext();
   const [messages, setMessages] = useState<ChatMessage[]>([welcome]);
   const [typing, setTyping] = useState(false);
   const thread = useRef<ChatMessage[]>([welcome]);
@@ -32,7 +36,7 @@ export const useChat = () => {
       setTyping(true);
       let reply: string;
       try {
-        reply = await chatApi.send(thread.current);
+        reply = await chatApi.send(thread.current, { local: localAi, context });
       } catch {
         reply = "Não consegui responder agora. Tente novamente em instantes.";
       }
@@ -40,7 +44,7 @@ export const useChat = () => {
       setTyping(false);
       busy.current = false;
     },
-    [append],
+    [append, localAi, context],
   );
 
   return { messages, typing, send };

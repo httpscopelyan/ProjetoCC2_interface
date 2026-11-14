@@ -1,7 +1,18 @@
 import { SENSOR_DEFS } from "../config/sensors";
 import type { ChatMessage } from "../../entities/chat/model";
-import { USE_MOCK, delay, post } from "./client";
+import { USE_MOCK, delay, get, post } from "./client";
+import { isLocalAiSupported, localLlm } from "./localLlm";
 import { mockSensors } from "./mock/sensors";
+
+interface SendOptions {
+  local?: boolean;
+  context?: string;
+  json?: boolean;
+}
+
+interface AskOptions extends SendOptions {
+  fallback: string;
+}
 
 const normalize = (text: string) =>
   text
@@ -22,14 +33,52 @@ const stubReply = (question: string) => {
   return "Ainda estou em modo de demonstração. Quando a IA real for conectada, responderei perguntas sobre o histórico dos sensores.";
 };
 
+const userMessage = (text: string): ChatMessage => ({
+  id: `ask-${Date.now()}`,
+  role: "user",
+  text,
+  at: new Date().toISOString(),
+});
+
+const usesLocalAi = (local: boolean) => local && isLocalAiSupported();
+
+interface BackendReply {
+  reply: string;
+}
+
+let backendGeneration: Promise<boolean> | null = null;
+
+const backendCanGenerate = (): Promise<boolean> => {
+  backendGeneration ??= get<{ generative: boolean }>("/api/ai/status")
+    .then(({ generative }) => generative)
+    .catch(() => {
+      backendGeneration = null;
+      return false;
+    });
+  return backendGeneration;
+};
+
 export const chatApi = {
-  async send(messages: ChatMessage[]): Promise<string> {
+  async send(messages: ChatMessage[], { local = false, context, json }: SendOptions = {}): Promise<string> {
+    if (usesLocalAi(local)) return localLlm.complete(messages, { context, json });
     if (USE_MOCK) {
       await delay(700);
       const last = [...messages].reverse().find((m) => m.role === "user");
       return stubReply(last?.text ?? "");
     }
-    const { reply } = await post<{ reply: string }>("/api/chat", { messages });
+    const question = [...messages].reverse().find(({ role }) => role === "user");
+    const { reply } = await post<BackendReply>("/api/chat", { messages: [{ role: "user", text: question?.text ?? "" }] });
     return reply;
+  },
+
+  async ask(prompt: string, { fallback, ...options }: AskOptions): Promise<string> {
+    if (usesLocalAi(options.local ?? false)) return chatApi.send([userMessage(prompt)], options);
+    if (USE_MOCK) {
+      await delay(300);
+      return fallback;
+    }
+    if (!(await backendCanGenerate())) return fallback;
+    const { reply } = await post<BackendReply>("/api/ai/generate", { prompt, json: options.json ?? false });
+    return reply || fallback;
   },
 };

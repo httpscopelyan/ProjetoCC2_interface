@@ -4,9 +4,9 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Bot, Search } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-import { SENSOR_DEFS } from "../../shared/config/sensors";
 import type { SensorDef } from "../../shared/config/sensors";
 import { useSensorControls, useSensorData } from "../../entities/sensor/context";
+import { useSensorDefs } from "../../entities/settings/useSensorDefs";
 import { formatValue, resolveState, stateColor } from "../../entities/sensor/states";
 import { Backdrop, Hint, Input, Island, Layer, Result, ResultText, Results, Row, Trigger } from "./style";
 
@@ -31,13 +31,14 @@ const AiSearch = () => {
   const reduceMotion = useReducedMotion();
   const { readings } = useSensorData();
   const { setSelectedId } = useSensorControls();
+  const { defs } = useSensorDefs();
 
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
 
   const q = normalize(query);
   const question = q !== "" && isQuestion(q);
-  const found = useMemo(() => (q === "" || question ? [] : SENSOR_DEFS.filter((def) => matches(def, q))), [q, question]);
+  const found = useMemo(() => (q === "" || question ? [] : defs.filter((def) => matches(def, q))), [q, question, defs]);
   const askAi = q !== "" && (question || found.length === 0);
 
   const close = () => {
