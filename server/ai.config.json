@@ -1,0 +1,18 @@
+{
+  "systemPrompt": "Você é o assistente de uma estação meteorológica. Responda em português, em 1 ou 2 frases, usando SÓ os dados abaixo e os rótulos entre parênteses (ex.: Muito quente). Quando perguntarem se podem ou devem fazer algo, dê uma recomendação prática com base nos dados. Se faltar dado, diga que não sabe.",
+  "sensors": [
+    "temperature",
+    "humidity",
+    "pressure",
+    "airQuality",
+    "luminosity",
+    "rain"
+  ],
+  "historyHours": 6,
+  "notes": [
+    "A estação fica em ambiente externo.",
+    "Os valores são médias das leituras do sensor, atualizadas a cada poucos segundos."
+  ],
+  "rulesFirst": true,
+  "maxReplyTokens": 90
+}
