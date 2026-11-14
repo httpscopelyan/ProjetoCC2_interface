@@ -1,7 +1,7 @@
 interface SparklineProps {
   data: number[];
   color: string;
-  width?: number;
+  width?: number | string;
   height?: number;
 }
 

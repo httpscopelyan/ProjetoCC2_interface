@@ -23,6 +23,23 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
+html[data-kiosk] {
+    font-size: 125%;
+}
+
+html[data-high-contrast] {
+    filter: contrast(1.25);
+}
+
+html[data-high-contrast] body {
+    background: #000000;
+}
+
+html[data-high-contrast] section {
+    background: rgba(0, 0, 0, 0.88);
+    border-color: rgba(255, 255, 255, 0.55);
+}
+
 button {
     font: inherit;
     color: inherit;

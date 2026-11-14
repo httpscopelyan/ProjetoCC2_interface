@@ -6,3 +6,9 @@ export const Bar = styled.header`
   justify-content: space-between;
   gap: 1rem;
 `;
+
+export const Tools = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+`;

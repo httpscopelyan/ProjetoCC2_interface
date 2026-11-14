@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 import PeriodSwitch from "../../features/PeriodSwitch";
 import CsvExport from "../../features/CsvExport";
+import PdfExport from "../../features/PdfExport";
 import { clock, dayMonth, salutation } from "../../shared/lib/date";
 import { Actions, Clock, DateLine, Row, Title } from "./style";
 
@@ -27,6 +28,7 @@ const Greeting = () => {
       <Actions>
         <PeriodSwitch />
         <CsvExport />
+        <PdfExport />
       </Actions>
     </Row>
   );

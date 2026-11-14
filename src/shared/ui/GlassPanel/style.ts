@@ -7,6 +7,19 @@ export const glass = css`
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 4px 16px rgba(0, 0, 0, 0.16);
 `;
 
+export const liquidGlass = css`
+  background:
+    radial-gradient(130% 100% at 0% 0%, rgba(255, 255, 255, 0.24), transparent 55%),
+    radial-gradient(120% 90% at 100% 100%, rgba(255, 255, 255, 0.1), transparent 60%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.03));
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    inset 0 -14px 20px -14px rgba(255, 255, 255, 0.22),
+    inset 0 0 24px rgba(255, 255, 255, 0.05),
+    0 8px 24px rgba(0, 0, 0, 0.22);
+`;
+
 export const glassFlat = css`
   background: rgba(255, 255, 255, 0.12);
   border: 1px solid ${colors.border};

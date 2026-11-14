@@ -50,6 +50,7 @@ export const Track = styled.div`
 
 export const Bar = styled(motion.div)<{ $color: string; $highlighted?: boolean }>`
   width: min(2.75rem, 80%);
+  transform-origin: bottom;
   border-radius: 0.6rem 0.6rem 0.3rem 0.3rem;
   background: ${({ $color }) => $color};
   opacity: ${({ $highlighted }) => ($highlighted ? 1 : 0.55)};

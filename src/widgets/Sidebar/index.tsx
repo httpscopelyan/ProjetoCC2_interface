@@ -1,11 +1,13 @@
-import { LayoutDashboard, Megaphone, MessageSquare } from "lucide-react";
+import { LayoutDashboard, ListChecks, Megaphone, MessageSquare, SlidersHorizontal } from "lucide-react";
 
 import { Item, Rail } from "./style";
 
 const items = [
   { label: "Painel", to: "/", icon: LayoutDashboard },
   { label: "Chat", to: "/chat", icon: MessageSquare },
+  { label: "Atividades", to: "/atividades", icon: ListChecks },
   { label: "Avisos", to: "/avisos", icon: Megaphone },
+  { label: "Configurações", to: "/configuracoes", icon: SlidersHorizontal },
 ];
 
 const Sidebar = () => {

@@ -1,13 +1,11 @@
-import { useLayoutEffect, useRef } from "react";
-import type { ReactNode } from "react";
-import { animate, useReducedMotion } from "framer-motion";
-import type { AnimationPlaybackControls } from "framer-motion";
+import { useEffect, useRef } from "react";
+import type { CSSProperties, ReactNode } from "react";
+import { useAppReady } from "../../../app/AppReady";
 import { Wrapper } from "./style";
 
-const ease = [0.22, 1, 0.36, 1] as const;
-const BASE_DELAY = 0.1;
-const STEP = 0.08;
-const START_SCALE = 0.96;
+const BASE_DELAY_S = 0.05;
+const STEP_S = 0.06;
+const MAX_STAGGERED_ORDER = 6;
 
 interface RevealProps {
   order?: number;
@@ -16,47 +14,29 @@ interface RevealProps {
 
 const Reveal = ({ order = 0, children }: RevealProps) => {
   const box = useRef<HTMLDivElement>(null);
-  const reduceMotion = useReducedMotion();
+  const ready = useAppReady();
 
-  useLayoutEffect(() => {
-    const el = box.current;
-    if (!el || reduceMotion) return;
+  useEffect(() => {
+    const element = box.current;
+    if (!ready || !element) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        element.dataset.revealed = "true";
+        observer.disconnect();
+      },
+      { threshold: 0.1 },
+    );
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [ready]);
 
-    const park = (fromY: number) => {
-      el.style.transform = `translateY(${fromY}px) scale(${START_SCALE})`;
-    };
-    const play = (fromY: number, delay: number) =>
-      animate(el, { y: [fromY, 0], scale: [START_SCALE, 1] }, { duration: 0.95, ease, delay });
-
-    let controls: AnimationPlaybackControls | undefined;
-    let observer: IntersectionObserver | undefined;
-    const { top, height } = el.getBoundingClientRect();
-
-    if (top < window.innerHeight) {
-      const fromY = -Math.max(top + height, 80);
-      park(fromY);
-      controls = play(fromY, BASE_DELAY + order * STEP);
-    } else {
-      park(60);
-      observer = new IntersectionObserver(
-        ([entry]) => {
-          if (!entry.isIntersecting) return;
-          controls = play(60, 0);
-          observer?.disconnect();
-        },
-        { threshold: 0.1 },
-      );
-      observer.observe(el);
-    }
-
-    return () => {
-      observer?.disconnect();
-      controls?.stop();
-      el.style.transform = "";
-    };
-  }, [order, reduceMotion]);
-
-  return <Wrapper ref={box}>{children}</Wrapper>;
+  const delay = BASE_DELAY_S + Math.min(order, MAX_STAGGERED_ORDER) * STEP_S;
+  return (
+    <Wrapper ref={box} style={{ "--reveal-delay": `${delay}s` } as CSSProperties}>
+      {children}
+    </Wrapper>
+  );
 };
 
 export default Reveal;

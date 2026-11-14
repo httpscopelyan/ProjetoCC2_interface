@@ -1,12 +1,14 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { TrendingDown, TrendingUp } from "lucide-react";
 
+import ExplainPoint from "../../features/ExplainPoint";
 import Badge from "../../shared/ui/Badge";
+import { CHART_ELEMENT_ID } from "../../shared/config/dom";
 import { GlassPanel, PanelHeader, PanelTitle } from "../../shared/ui/GlassPanel/style";
-import { SENSOR_BY_ID } from "../../shared/config/sensors";
 import type { Period, SensorDef } from "../../shared/config/sensors";
 import { parseIsoDay } from "../../shared/lib/date";
 import { useSensorControls, useSensorData } from "../../entities/sensor/context";
+import { useSensorDefs } from "../../entities/settings/useSensorDefs";
 import type { SeriesPoint } from "../../entities/sensor/model";
 import { changePct, formatNumber, formatValue, stateColor } from "../../entities/sensor/states";
 import { Bar, Bars, Column, Empty, Label, Plot, Subtitle, Track, Value, YAxis } from "./style";
@@ -56,7 +58,11 @@ const SensorChart = () => {
   const { seriesBySensor } = useSensorData();
   const { selectedId, period, day } = useSensorControls();
 
-  const def = SENSOR_BY_ID[selectedId];
+  const { byId } = useSensorDefs();
+  const def = byId[selectedId];
+  const [pointChoice, setPointChoice] = useState<{ viewKey: string; at: string } | null>(null);
+  const viewKey = `${selectedId}|${period}|${day}`;
+  const explainedAt = pointChoice?.viewKey === viewKey ? pointChoice.at : null;
   const points = useMemo(() => seriesBySensor[selectedId]?.points ?? [], [seriesBySensor, selectedId]);
 
   const axis = useMemo(() => (points.length > 0 ? buildAxis(def, points) : null), [def, points]);
@@ -72,7 +78,7 @@ const SensorChart = () => {
   const subtitle = day ? `Medições de ${dayLongFormat.format(parseIsoDay(day))}, hora a hora` : subtitles[period];
 
   return (
-    <GlassPanel>
+    <GlassPanel id={CHART_ELEMENT_ID}>
       <PanelHeader>
         <div>
           <PanelTitle>
@@ -107,10 +113,12 @@ const SensorChart = () => {
                     <Bar
                       $color={stateColor(def, point.value, {})}
                       $highlighted={i === maxIndex}
-                      initial={{ height: 0 }}
-                      animate={{ height: `${Math.max(height, 1)}%` }}
+                      style={{ height: `${Math.max(height, 1)}%` }}
+                      initial={{ scaleY: 0 }}
+                      animate={{ scaleY: 1 }}
                       transition={{ duration: 0.7, ease: "easeOut" }}
-                      title={`${label}: ${formatValue(def, point.value)}`}
+                      title={`${label}: ${formatValue(def, point.value)} · clique para entender`}
+                      onClick={() => setPointChoice({ viewKey, at: point.at })}
                     />
                   </Track>
                   <Label>{i % labelEvery === 0 ? label : ""}</Label>
@@ -122,6 +130,8 @@ const SensorChart = () => {
       ) : (
         <Empty>{seriesBySensor[selectedId] ? "Sem medições para este período." : "Carregando medições…"}</Empty>
       )}
+
+      {explainedAt && <ExplainPoint def={def} at={explainedAt} />}
     </GlassPanel>
   );
 };

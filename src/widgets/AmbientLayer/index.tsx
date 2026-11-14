@@ -2,11 +2,10 @@ import { useEffect, useMemo, useState } from "react";
 import type { CSSProperties } from "react";
 import { useReducedMotion } from "framer-motion";
 
-import { SENSOR_BY_ID } from "../../shared/config/sensors";
-import { withAlpha } from "../../shared/lib/color";
 import { useSensorData } from "../../entities/sensor/context";
 import { stateColor } from "../../entities/sensor/states";
-import { Drop, EdgeGlow, Gust, Particles, Root, Tint } from "./style";
+import { useSensorDefs } from "../../entities/settings/useSensorDefs";
+import { Darkness, Drop, EdgeGlow, Gust, Particles, Root, Tint } from "./style";
 
 const glowIntensity = (temperature: number) => {
   if (temperature < 16) return Math.min(1, (16 - temperature) / 10);
@@ -14,13 +13,23 @@ const glowIntensity = (temperature: number) => {
   return 0;
 };
 
-const rainCount = (rain: number) => (rain >= 10 ? 60 : rain >= 2 ? 40 : rain >= 0.1 ? 22 : 0);
+const MIN_DROPS = 12;
+const MAX_DROPS = 50;
+const DROPS_PER_MM_PER_HOUR = 6;
+const MAX_DARKNESS = 0.45;
+
+const rainCount = (rain: number) =>
+  rain < 0.1 ? 0 : Math.min(MAX_DROPS, Math.max(MIN_DROPS, Math.round(rain * DROPS_PER_MM_PER_HOUR)));
+
+const darkness = (luminosity: number | undefined) =>
+  luminosity === undefined ? 0 : (1 - Math.min(100, Math.max(0, luminosity)) / 100) * MAX_DARKNESS;
 
 const spread = (count: number, scale: number, offset = 0) =>
   Array.from({ length: count }, (_, i) => ((i * scale + offset) % 100) / 100);
 
 const AmbientLayer = () => {
   const { live } = useSensorData();
+  const { byId } = useSensorDefs();
   const reduceMotion = useReducedMotion();
   const [hidden, setHidden] = useState(document.hidden);
 
@@ -31,7 +40,7 @@ const AmbientLayer = () => {
   }, []);
 
   const temperature = live.temperature;
-  const glowColor = temperature === undefined ? null : stateColor(SENSOR_BY_ID.temperature, temperature, live);
+  const glowColor = temperature === undefined ? null : stateColor(byId.temperature, temperature, live);
   const intensity = temperature === undefined ? 0 : glowIntensity(temperature);
 
   const drops = rainCount(live.rain ?? 0);
@@ -65,10 +74,10 @@ const AmbientLayer = () => {
   return (
     <Root aria-hidden style={{ "--ambient-base": glowColor ?? "transparent" } as CSSProperties}>
       <Tint />
+      <Darkness style={{ opacity: darkness(live.luminosity) }} />
       <EdgeGlow
         style={{
-          opacity: intensity * 0.38,
-          boxShadow: glowColor ? `inset 0 0 220px 30px ${withAlpha(glowColor, 0.85)}` : "none",
+          opacity: intensity * 0.6,
         }}
       />
       {!reduceMotion && drops > 0 && (

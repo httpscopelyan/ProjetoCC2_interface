@@ -2,20 +2,21 @@ import { useEffect } from "react";
 
 import StatsCard from "../../shared/ui/Cards/Card";
 import Reveal from "../../shared/ui/Reveal";
-import { SENSOR_DEFS } from "../../shared/config/sensors";
 import { setAmbientTint } from "../../shared/lib/ambient";
 import { useSensorControls, useSensorData } from "../../entities/sensor/context";
+import { useSensorDefs } from "../../entities/settings/useSensorDefs";
 import { Grid } from "./style";
 
 const StatsOverview = () => {
   const { readings, seriesBySensor } = useSensorData();
   const { selectedId, setSelectedId } = useSensorControls();
+  const { defs } = useSensorDefs();
 
   useEffect(() => () => setAmbientTint(null), []);
 
   return (
     <Grid>
-      {SENSOR_DEFS.map((def, i) => {
+      {defs.map((def, i) => {
         const value = readings[def.id];
         if (value === undefined) return null;
         return (

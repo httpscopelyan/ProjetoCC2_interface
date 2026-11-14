@@ -1,10 +1,10 @@
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import { colors } from "../../config/theme";
-import { glass } from "../GlassPanel/style";
+import { liquidGlass } from "../GlassPanel/style";
 
 export const Card = styled(motion.div)<{ $color: string; $selected: boolean }>`
-  ${glass}
+  ${liquidGlass}
   position: relative;
   display: flex;
   flex-direction: column;
@@ -14,10 +14,24 @@ export const Card = styled(motion.div)<{ $color: string; $selected: boolean }>`
   min-width: 0;
   cursor: pointer;
   outline: none;
-  border-color: ${({ $selected }) => ($selected ? "rgba(255, 255, 255, 0.55)" : colors.border)};
-  box-shadow: ${({ $selected }) =>
-    $selected ? "0 0 0 1px rgba(255, 255, 255, 0.2) inset, 0 4px 16px rgba(0, 0, 0, 0.16)" : "inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 4px 16px rgba(0, 0, 0, 0.16)"};
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  ${({ $selected }) => $selected && "border-color: rgba(255, 255, 255, 0.6);"}
+  transition: border-color 0.3s ease;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, 0.16) 50%, transparent 65%);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+  }
+
+  &:hover::after,
+  &:focus-visible::after {
+    opacity: 1;
+  }
 
   &::before {
     content: "";

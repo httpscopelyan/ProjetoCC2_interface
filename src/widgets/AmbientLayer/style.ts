@@ -21,7 +21,8 @@ export const Root = styled.div`
 export const EdgeGlow = styled.div`
   position: absolute;
   inset: 0;
-  transition: box-shadow 1.2s ease, opacity 1.2s ease;
+  background: radial-gradient(ellipse at center, transparent 45%, var(--ambient-base, transparent) 120%);
+  transition: opacity 1.2s ease;
 `;
 
 export const Tint = styled.div`
@@ -32,9 +33,17 @@ export const Tint = styled.div`
   transition: background-color 0.7s ease;
 `;
 
-export const Particles = styled.div<{ $paused: boolean }>`
+export const Darkness = styled.div`
   position: absolute;
   inset: 0;
+  background: #000000;
+  transition: opacity 1.5s ease;
+`;
+
+export const Particles =styled.div<{ $paused: boolean }>`
+  position: absolute;
+  inset: 0;
+  contain: strict;
 
   > span {
     animation-play-state: ${({ $paused }) => ($paused ? "paused" : "running")};
@@ -48,7 +57,6 @@ export const Drop = styled.span`
   border-radius: 1px;
   background: linear-gradient(to bottom, transparent, rgba(174, 200, 235, 0.7));
   animation: ${fall} linear infinite;
-  will-change: transform;
 `;
 
 export const Gust = styled.span`
@@ -58,5 +66,4 @@ export const Gust = styled.span`
   border-radius: 2px;
   background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.22), transparent);
   animation: ${drift} linear infinite;
-  will-change: transform;
 `;

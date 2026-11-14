@@ -23,7 +23,17 @@ export const parseIsoDay = (iso: string) => {
   return new Date(y, m - 1, d);
 };
 
-export const relative = (iso: string, now: Date = new Date()): string => {
+const DAY_MS = 24 * 60 * 60 * 1000;
+const shortDateFormat = new Intl.DateTimeFormat(locale, { day: "numeric", month: "short" });
+
+export const formatSpan = (startIso: string, endIso: string): string => {
+  const start = new Date(startIso);
+  const end = new Date(endIso);
+  if (end.getTime() - start.getTime() >= DAY_MS) return shortDateFormat.format(start);
+  return `${clock(start)}–${clock(end)}`;
+};
+
+export const relative =(iso: string, now: Date = new Date()): string => {
   const minutes = Math.round((now.getTime() - new Date(iso).getTime()) / 60000);
   if (minutes < 1) return "agora";
   if (minutes < 60) return `há ${minutes} min`;
