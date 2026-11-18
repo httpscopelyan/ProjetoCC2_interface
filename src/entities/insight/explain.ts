@@ -10,7 +10,7 @@ interface Relation {
 
 const RELATIONS: Record<SensorId, Relation[]> = {
   temperature: [
-    { other: "luminosity", labels: ["Sol forte"], phrase: "o sol forte aquece o ambiente" },
+    { other: "luminosity", labels: ["Claro", "Muito claro"], phrase: "a luz intensa aquece o ambiente" },
     { other: "rain", labels: ["Garoa", "Chuva", "Tempestade"], phrase: "a chuva costuma esfriar o ar" },
     { other: "humidity", labels: ["Seco"], phrase: "o ar seco aquece e esfria mais rápido" },
   ],
@@ -26,6 +26,7 @@ const RELATIONS: Record<SensorId, Relation[]> = {
     { other: "rain", labels: ["Garoa", "Chuva", "Tempestade"], phrase: "a chuva limpa o ar" },
     { other: "humidity", labels: ["Saturado"], phrase: "ar úmido e parado retém poluentes" },
   ],
+  airQualityRaw: [],
   luminosity: [
     { other: "rain", labels: ["Garoa", "Chuva", "Tempestade"], phrase: "nuvens de chuva reduzem a luz" },
     { other: "humidity", labels: ["Saturado"], phrase: "céu carregado reduz a luz" },
@@ -33,7 +34,7 @@ const RELATIONS: Record<SensorId, Relation[]> = {
   rain: [
     { other: "pressure", labels: ["Baixa"], phrase: "a pressão baixa favorece chuva" },
     { other: "humidity", labels: ["Úmido", "Saturado"], phrase: "a umidade alta indica ar carregado" },
-    { other: "luminosity", labels: ["Nublado", "Crepúsculo", "Noite"], phrase: "o céu estava fechado" },
+    { other: "luminosity", labels: ["Escuro", "Penumbra"], phrase: "o céu estava fechado" },
   ],
 };
 

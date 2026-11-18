@@ -74,8 +74,10 @@ Para testar com o Arduino/ESP32 real, siga o passo a passo em **[GUIA-ARDUINO.md
 
 ```bash
 curl -X POST http://localhost:3000/api/readings -H "Content-Type: application/json" \
-  -d '{"temperature":24.1,"humidity":61,"pressure":1012,"airQuality":42,"luminosity":55,"rain":0}'
+  -d '{"temperature":24.1,"humidity":61,"pressure":1012,"airQualityRaw":500,"luminosity":55,"rain":0}'
 ```
+
+`airQualityRaw` é a leitura bruta do MQ-135 (0 a 4095): aparece como indicador bruto, sem classificação nem alertas. `airQuality` (AQI, 0 a 500) é um campo separado, reservado para uma fonte de AQI real.
 
 Também vale `{"readings":[{"sensorId":"temperature","value":24.1,"at":"2026-11-14T12:00:00Z"}]}`. Defina `INGEST_API_KEY` para exigir o header `x-api-key`. Valores fora da faixa física de cada sensor são rejeitados.
 

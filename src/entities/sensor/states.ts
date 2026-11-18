@@ -31,6 +31,7 @@ export const stateColor = (def: SensorDef, value: number, all: Readings): string
   if (state.when) return state.color;
 
   const bands = def.states.filter((band) => !band.when);
+  if (bands.length < 2) return bands[0]?.color ?? state.color;
   const centers = bandCenters(def, bands);
   const last = bands.length - 1;
   if (value <= centers[0]) return bands[0].color;

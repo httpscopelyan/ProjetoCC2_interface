@@ -17,22 +17,6 @@ export const Card = styled(motion.div)<{ $color: string; $selected: boolean }>`
   ${({ $selected }) => $selected && "border-color: rgba(255, 255, 255, 0.6);"}
   transition: border-color 0.3s ease;
 
-  &::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, 0.16) 50%, transparent 65%);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.4s ease;
-  }
-
-  &:hover::after,
-  &:focus-visible::after {
-    opacity: 1;
-  }
-
   &::before {
     content: "";
     position: absolute;

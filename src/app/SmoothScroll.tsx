@@ -5,7 +5,7 @@ const SmoothScroll = () => {
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    const lenis = new Lenis({ lerp: 0.075, wheelMultiplier: 0.85 });
+    const lenis = new Lenis({ lerp: 0.14, wheelMultiplier: 1 });
     let frame = requestAnimationFrame(function raf(time) {
       lenis.raf(time);
       frame = requestAnimationFrame(raf);

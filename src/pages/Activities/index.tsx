@@ -3,7 +3,7 @@ import ActivitySearch from "../../features/ActivitySearch";
 import ActivityPanel from "../../widgets/ActivityPanel";
 import PresetActivities from "../../widgets/PresetActivities";
 import { useScenarioCheck } from "../../entities/activity/useScenarioCheck";
-import { Content } from "../Chat/style";
+import { Content } from "./style";
 
 const Activities = () => {
   const { query, setQuery, result, loading, ask } = useScenarioCheck();

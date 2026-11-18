@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { createPortal } from "react-dom";
 import type { FormEvent } from "react";
 import { AnimatePresence } from "framer-motion";
 import { MessageSquareHeart, Send, Star } from "lucide-react";
@@ -37,7 +38,7 @@ const Feedback = () => {
     <>
       <IconButton icon={MessageSquareHeart} label="Enviar feedback" onClick={() => setOpen(true)} />
 
-      <AnimatePresence>
+      {createPortal(<AnimatePresence>
         {open && (
           <>
             <Backdrop key="backdrop" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={close} />
@@ -88,7 +89,7 @@ const Feedback = () => {
             </Layer>
           </>
         )}
-      </AnimatePresence>
+      </AnimatePresence>, document.body)}
     </>
   );
 };

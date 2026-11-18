@@ -58,7 +58,7 @@ export const List = styled.ul`
 
 export const Row = styled.li<{ $active: boolean }>`
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 0.5rem;
   padding: 0.3rem 0.45rem;
   border-radius: 0.6rem;
@@ -84,5 +84,13 @@ export const Text = styled.div`
   span {
     font-size: 0.66rem;
     color: ${colors.muted};
+  }
+
+  em {
+    margin-top: 0.1rem;
+    font-size: 0.64rem;
+    font-style: normal;
+    line-height: 1.35;
+    color: ${colors.faint};
   }
 `;

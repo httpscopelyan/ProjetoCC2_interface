@@ -37,7 +37,7 @@ const ThresholdEditor = () => {
       <Hint>Cada campo define até onde vai um estado. Os valores precisam ficar em ordem crescente.</Hint>
 
       <Grid>
-        {defs.map((def) => {
+        {defs.filter((def) => defaultEdges(def).length > 0).map((def) => {
           const edges = defaultEdges(def);
           const bands = def.states.filter((state) => !state.when);
           const SensorIcon = def.icon;

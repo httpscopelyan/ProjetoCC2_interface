@@ -1,10 +1,11 @@
-export type SensorId = "temperature" | "humidity" | "pressure" | "airQuality" | "luminosity" | "rain";
+export type SensorId = "temperature" | "humidity" | "pressure" | "airQuality" | "airQualityRaw" | "luminosity" | "rain";
 export type Severity = "info" | "warning" | "critical";
 
 export interface SensorState {
   max: number;
   label: string;
   range: string;
+  meaning?: string;
   alert?: Severity;
 }
 
@@ -79,6 +80,18 @@ export const SENSORS: SensorDef[] = [
     ],
   },
   {
+    // Leitura analógica bruta do MQ-135 (ADC 12 bits). NÃO é AQI: não tem faixas de
+    // qualidade nem gera alertas, porque a escala 0..500 do AQI é outra grandeza.
+    id: "airQualityRaw",
+    title: "Qualidade do ar",
+    unit: "ADC",
+    decimals: 0,
+    aliases: ["mq-135", "mq135", "leitura bruta do ar", "ar bruto"],
+    validRange: [0, 4095],
+    noticeableChange: 100,
+    states: [{ max: Infinity, label: "Leitura bruta", range: "sem classificação (indicador bruto)" }],
+  },
+  {
     id: "luminosity",
     title: "Luminosidade",
     unit: "%",
@@ -87,10 +100,11 @@ export const SENSORS: SensorDef[] = [
     validRange: [0, 100],
     noticeableChange: 5,
     states: [
-      { max: 5, label: "Noite", range: "abaixo de 5%" },
-      { max: 25, label: "Crepúsculo", range: "5 a 25%" },
-      { max: 70, label: "Nublado", range: "25 a 70%" },
-      { max: Infinity, label: "Sol forte", range: "acima de 70%" },
+      { max: 16, label: "Escuro", range: "0 a 15%", meaning: "ausência total ou quase total de luz" },
+      { max: 41, label: "Penumbra", range: "16 a 40%", meaning: "luz fraca ou difusa" },
+      { max: 71, label: "Iluminado", range: "41 a 70%", meaning: "claridade moderada e confortável" },
+      { max: 91, label: "Claro", range: "71 a 90%", meaning: "alta incidência de luz" },
+      { max: Infinity, label: "Muito claro", range: "91 a 100%", meaning: "luz intensa e ofuscante" },
     ],
   },
   {

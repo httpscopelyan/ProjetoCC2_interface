@@ -18,6 +18,7 @@ const PROFILES: Record<Exclude<SensorId, "luminosity" | "rain">, Profile> = {
   humidity: { base: 62, diurnal: -14, drift: 10, noise: 2, min: 10, max: 100 },
   pressure: { base: 1013, diurnal: 2, drift: 8, noise: 1, min: 980, max: 1040 },
   airQuality: { base: 45, diurnal: 12, drift: 14, noise: 4, min: 5, max: 200 },
+  airQualityRaw: { base: 500, diurnal: 60, drift: 80, noise: 20, min: 0, max: 4095 },
 };
 
 const rand = (key: string) => {
@@ -91,7 +92,7 @@ const lastMonths = (id: SensorId): SeriesPoint[] =>
     return { at: at(new Date(first.getFullYear(), first.getMonth(), 1, 12)), value: avg };
   });
 
-const ids: SensorId[] = ["temperature", "humidity", "pressure", "airQuality", "luminosity", "rain"];
+const ids: SensorId[] = ["temperature", "humidity", "pressure", "airQuality", "airQualityRaw", "luminosity", "rain"];
 
 export const mockSensors = {
   latest(): SensorReading[] {

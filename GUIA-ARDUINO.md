@@ -70,7 +70,7 @@ O endereço que o Arduino vai usar é: `http://IP-DO-COMPUTADOR:3000/api/reading
 **Formato simples** (recomendado: um objeto com os sensores que tiver; pode mandar só alguns):
 
 ```json
-{ "temperature": 24.1, "humidity": 61, "pressure": 1012, "airQuality": 42, "luminosity": 55, "rain": 0 }
+{ "temperature": 24.1, "humidity": 61, "pressure": 1012, "airQualityRaw": 500, "luminosity": 55, "rain": 0 }
 ```
 
 Também é aceito o formato em lista, com data/hora própria (ISO 8601 ou milissegundos):
@@ -88,9 +88,12 @@ Se não enviar `at`, o backend usa a hora em que recebeu a leitura (o mais fáci
 | `temperature` | Temperatura | °C | -40 a 60 |
 | `humidity` | Umidade | % | 0 a 100 |
 | `pressure` | Pressão | hPa | 800 a 1100 |
-| `airQuality` | Qualidade do ar | AQI | 0 a 500 |
+| `airQuality` | Qualidade do ar (índice oficial) | AQI | 0 a 500 |
+| `airQualityRaw` | Qualidade do ar (leitura bruta, MQ-135) | ADC (sem unidade) | 0 a 4095 |
 | `luminosity` | Luminosidade | % | 0 a 100 |
 | `rain` | Chuva | mm/h | 0 a 500 |
+
+**MQ-135:** envie a leitura analógica crua (`analogRead`, 0 a 4095) em `airQualityRaw`. Não converta para AQI e não use `airQuality` para isso: o MQ-135 não mede AQI. O dashboard mostra `airQualityRaw` como indicador bruto, sem classificação e sem alertas. `airQuality` fica reservado para uma futura fonte de AQI real.
 
 Valores fora da faixa são **rejeitados** (a resposta diz qual). Converta no Arduino antes de enviar (ex.: luminosidade do sensor LDR para 0 a 100 %). Não existe sensor de vento nesta versão.
 
@@ -143,7 +146,7 @@ const unsigned long INTERVALO_MS = 10000;
 float lerTemperatura()  { return 0; } // °C
 float lerUmidade()      { return 0; } // %
 float lerPressao()      { return 0; } // hPa
-float lerQualidadeAr()  { return 0; } // AQI
+const int PIN_MQ135 = 34; // ajuste para o pino analógico do MQ-135
 float lerLuminosidade() { return 0; } // 0 a 100 %
 float lerChuva()        { return 0; } // mm/h
 
@@ -157,7 +160,7 @@ void enviarLeituras() {
   String json = "{\"temperature\":" + String(lerTemperatura(), 1) +
                 ",\"humidity\":" + String(lerUmidade(), 1) +
                 ",\"pressure\":" + String(lerPressao(), 1) +
-                ",\"airQuality\":" + String(lerQualidadeAr(), 0) +
+                ",\"airQualityRaw\":" + String(analogRead(PIN_MQ135)) +
                 ",\"luminosity\":" + String(lerLuminosidade(), 0) +
                 ",\"rain\":" + String(lerChuva(), 1) + "}";
 

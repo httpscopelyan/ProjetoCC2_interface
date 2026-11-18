@@ -28,6 +28,7 @@ const StateHelp = ({ def, activeIndex }: StateHelpProps) => {
                 <Text>
                   <strong>{state.label}</strong>
                   <span>{state.range}</span>
+                  {state.meaning && <em>{state.meaning}</em>}
                 </Text>
               </Row>
             );

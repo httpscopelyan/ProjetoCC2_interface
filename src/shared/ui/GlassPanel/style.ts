@@ -1,23 +1,29 @@
 import styled, { css } from "styled-components";
 import { colors } from "../../config/theme";
 
+/* Vidro fosco barato: fundo quase opaco + blur pequeno e fixo (nunca animar o raio).
+   Sem suporte a backdrop-filter, o fundo mais opaco mantém a leitura. */
+const frosted = css`
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    background-color: rgba(20, 22, 28, 0.92);
+  }
+`;
+
 export const glass = css`
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.05));
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02)), rgba(20, 22, 28, 0.45);
   border: 1px solid ${colors.border};
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 4px 16px rgba(0, 0, 0, 0.16);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 4px 16px rgba(0, 0, 0, 0.16);
+  ${frosted}
 `;
 
 export const liquidGlass = css`
-  background:
-    radial-gradient(130% 100% at 0% 0%, rgba(255, 255, 255, 0.24), transparent 55%),
-    radial-gradient(120% 90% at 100% 100%, rgba(255, 255, 255, 0.1), transparent 60%),
-    linear-gradient(145deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.03));
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.4),
-    inset 0 -14px 20px -14px rgba(255, 255, 255, 0.22),
-    inset 0 0 24px rgba(255, 255, 255, 0.05),
-    0 8px 24px rgba(0, 0, 0, 0.22);
+  background: rgba(20, 22, 28, 0.42);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+  ${frosted}
 `;
 
 export const glassFlat = css`

@@ -16,6 +16,7 @@ const NOTABLE_LABELS: Record<SensorId, string[]> = {
   humidity: ["Seco", "Saturado"],
   pressure: ["Baixa"],
   airQuality: ["Ruim"],
+  airQualityRaw: [],
   luminosity: [],
   rain: ["Garoa", "Chuva", "Tempestade"],
 };

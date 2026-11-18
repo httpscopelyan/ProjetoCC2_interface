@@ -13,7 +13,7 @@ const MAX_SUGGESTIONS = 6;
 const STATUSES: VerdictStatus[] = ["go", "caution", "stop"];
 const SUGGESTED_ACTIVITIES = 4;
 
-const BUCKET_SIZE: Record<Exclude<SensorId, "rain">, number> = {
+const BUCKET_SIZE: Record<Exclude<SensorId, "rain" | "airQualityRaw">, number> = {
   temperature: 2,
   humidity: 10,
   pressure: 5,

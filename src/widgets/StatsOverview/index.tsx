@@ -14,8 +14,10 @@ const StatsOverview = () => {
 
   useEffect(() => () => setAmbientTint(null), []);
 
+  const visibleCount = defs.filter((def) => readings[def.id] !== undefined).length;
+
   return (
-    <Grid>
+    <Grid $count={visibleCount}>
       {defs.map((def, i) => {
         const value = readings[def.id];
         if (value === undefined) return null;

@@ -1,14 +1,16 @@
 import {
+  Activity,
   Bubbles,
   Cloud,
   CloudDrizzle,
   CloudLightning,
   CloudRain,
   CloudRainWind,
-  CloudSun,
   Droplet,
   Droplets,
+  Flame,
   Gauge,
+  Lightbulb,
   Moon,
   Sun,
   Sunset,
@@ -21,7 +23,7 @@ import {
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
-export type SensorId = "temperature" | "humidity" | "pressure" | "airQuality" | "luminosity" | "rain";
+export type SensorId = "temperature" | "humidity" | "pressure" | "airQuality" | "airQualityRaw" | "luminosity" | "rain";
 export type Period = "now" | "week" | "month" | "year";
 
 export type Readings = Partial<Record<SensorId | "windSpeed", number>>;
@@ -32,6 +34,7 @@ export interface SensorState {
   color: string;
   label: string;
   range: string;
+  meaning?: string;
   when?: (all: Readings) => boolean;
 }
 
@@ -109,19 +112,66 @@ export const SENSOR_DEFS: SensorDef[] = [
     ],
   },
   {
+    id: "airQualityRaw",
+    title: "Qualidade do ar",
+    icon: Activity,
+    unit: "ADC",
+    decimals: 0,
+    floor: 0,
+    help: "Leitura analógica bruta do sensor MQ-135 (0 a 4095). Não é AQI e não é classificada: serve só para acompanhar a variação.",
+    aliases: ["mq-135", "mq135", "leitura bruta", "ar bruto"],
+    states: [{ max: Infinity, icon: Activity, color: "#94a3b8", label: "Leitura bruta", range: "indicador bruto, sem classificação" }],
+  },
+  {
     id: "luminosity",
     title: "Luminosidade",
     icon: Sun,
     unit: "%",
     decimals: 0,
     floor: 0,
-    help: "Intensidade da luz ambiente.",
+    help: "Intensidade da luz ambiente, de 0 a 100%.",
     aliases: ["luminosidade", "luz", "claridade"],
     states: [
-      { max: 5, icon: Moon, color: "#6366f1", label: "Noite", range: "abaixo de 5%" },
-      { max: 25, icon: Sunset, color: "#a78bfa", label: "Crepúsculo", range: "5 a 25%" },
-      { max: 70, icon: CloudSun, color: "#60a5fa", label: "Nublado", range: "25 a 70%" },
-      { max: Infinity, icon: Sun, color: "#f59e0b", label: "Sol forte", range: "acima de 70%" },
+      {
+        max: 16,
+        icon: Moon,
+        color: "#1e3a8a",
+        label: "Escuro",
+        range: "0 a 15%",
+        meaning: "Ausência total ou quase total de luz: ambiente fechado sem iluminação ou noite profunda.",
+      },
+      {
+        max: 41,
+        icon: Sunset,
+        color: "#a78bfa",
+        label: "Penumbra",
+        range: "16 a 40%",
+        meaning: "Luz fraca ou difusa, típica de ambientes internos sombreados ou do amanhecer e anoitecer.",
+      },
+      {
+        max: 71,
+        icon: Lightbulb,
+        color: "#34d399",
+        label: "Iluminado",
+        range: "41 a 70%",
+        meaning: "Claridade moderada e confortável, padrão para ambientes com luz natural ou artificial adequada.",
+      },
+      {
+        max: 91,
+        icon: Sun,
+        color: "#facc15",
+        label: "Claro",
+        range: "71 a 90%",
+        meaning: "Alta incidência de luz, comum em locais abertos à meia-luz do sol ou salas muito iluminadas.",
+      },
+      {
+        max: Infinity,
+        icon: Flame,
+        color: "#f97316",
+        label: "Muito claro",
+        range: "91 a 100%",
+        meaning: "Exposição direta e intensa à luz do sol ou a fontes de alta potência: ofuscante, alerta de excesso.",
+      },
     ],
   },
   {

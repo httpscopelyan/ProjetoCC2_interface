@@ -43,7 +43,8 @@ const StatsCard = ({ def, value, all, series, selected, onSelect, onHoverChange 
       role="button"
       tabIndex={0}
       aria-pressed={selected}
-      whileHover={{ y: -5 }}
+      whileHover={{ y: -4 }}
+      transition={{ duration: 0.16, ease: "easeOut" }}
       $color={color}
       $selected={selected}
       onClick={() => onSelect(def.id)}

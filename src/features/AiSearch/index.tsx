@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { createPortal } from "react-dom";
 import type { FormEvent } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Bot, Search } from "lucide-react";
@@ -94,7 +95,7 @@ const AiSearch = () => {
         </Trigger>
       )}
 
-      <AnimatePresence>
+      {createPortal(<AnimatePresence>
         {open && (
           <>
             <Backdrop
@@ -165,7 +166,7 @@ const AiSearch = () => {
             </Layer>
           </>
         )}
-      </AnimatePresence>
+      </AnimatePresence>, document.body)}
     </>
   );
 };
