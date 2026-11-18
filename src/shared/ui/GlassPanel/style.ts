@@ -1,14 +1,21 @@
 import styled, { css } from "styled-components";
 import { colors } from "../../config/theme";
 
-/* Vidro fosco barato: fundo quase opaco + blur pequeno e fixo (nunca animar o raio).
-   Sem suporte a backdrop-filter, o fundo mais opaco mantém a leitura. */
+/* Vidro fosco barato: blur pequeno e fixo (nunca animar o raio) sobre um fundo já escuro.
+   Em telas de toque (celulares/tablets) e sem suporte a backdrop-filter, o blur é dispensado
+   e o fundo fica um pouco mais opaco: o custo vai a zero e a leitura se mantém. */
 const frosted = css`
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+
+  @media (pointer: coarse), (prefers-reduced-transparency: reduce) {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background-color: rgba(20, 22, 28, 0.78);
+  }
 
   @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-    background-color: rgba(20, 22, 28, 0.92);
+    background-color: rgba(20, 22, 28, 0.78);
   }
 `;
 
