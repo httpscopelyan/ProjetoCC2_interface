@@ -1,16 +1,35 @@
 import styled, { css } from "styled-components";
 import { colors } from "../../config/theme";
+import blurredBackground from "../../../assets/background_blur.webp";
 
-/* Vidro translúcido sem backdrop-filter: o fundo do app é estático e escuro, então um fundo
-   semitransparente entrega o mesmo visual sem o custo de GPU do blur em dezenas de elementos. */
+/* Vidro desfocado sem backdrop-filter: o fundo do app é uma imagem estática e fixa, então o
+   "blur" vem de uma cópia já desfocada (pequena, 480px) presa à janela com o mesmo recorte e o
+   mesmo escurecimento do fundo real. Ela se alinha ao que está atrás do card e custa só uma
+   textura: nada é recalculado por quadro. */
+const blurredBackdrop = (tint: string) => css`
+  background-color: transparent;
+  background-image:
+    linear-gradient(${tint}, ${tint}),
+    linear-gradient(to bottom, rgba(8, 9, 12, 0.35), rgba(8, 9, 12, 0.8)),
+    url(${blurredBackground});
+  background-attachment: scroll, fixed, fixed;
+  background-size: auto, 100% 100%, cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  @media (pointer: coarse) {
+    background-attachment: scroll;
+  }
+`;
+
 export const glass = css`
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02)), rgba(20, 22, 28, 0.45);
+  ${blurredBackdrop("rgba(20, 22, 28, 0.42)")}
   border: 1px solid ${colors.border};
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 4px 16px rgba(0, 0, 0, 0.16);
 `;
 
 export const liquidGlass = css`
-  background: rgba(20, 22, 28, 0.42);
+  ${blurredBackdrop("rgba(20, 22, 28, 0.38)")}
   border: 1px solid rgba(255, 255, 255, 0.14);
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
 `;
