@@ -1,8 +1,10 @@
 import styled, { keyframes } from "styled-components";
 
+/* Só opacidade: qualquer transform no bloco desalinha o fundo desfocado dos cards
+   (background-attachment: fixed), que apareceria nítido durante a entrada. */
 const reveal = keyframes`
-  from { opacity: 0; transform: translate3d(0, -14px, 0); }
-  to { opacity: 1; transform: none; }
+  from { opacity: 0; }
+  to { opacity: 1; }
 `;
 
 export const Wrapper = styled.div`
