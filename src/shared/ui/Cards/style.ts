@@ -15,7 +15,8 @@ export const Card = styled(motion.div)<{ $color: string; $selected: boolean }>`
   cursor: pointer;
   outline: none;
   ${({ $selected }) => $selected && "border-color: rgba(255, 255, 255, 0.6);"}
-  transition: border-color 0.3s ease;
+  top: 0;
+  transition: border-color 0.3s ease, top 0.16s ease-out;
 
   &::before {
     content: "";
@@ -30,6 +31,7 @@ export const Card = styled(motion.div)<{ $color: string; $selected: boolean }>`
 
   &:hover,
   &:focus-within {
+    top: -4px;
     z-index: 20;
   }
 
