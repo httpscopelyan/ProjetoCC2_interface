@@ -1,36 +1,18 @@
 import styled, { css } from "styled-components";
 import { colors } from "../../config/theme";
 
-/* Vidro fosco barato: blur pequeno e fixo (nunca animar o raio) sobre um fundo já escuro.
-   Em telas de toque (celulares/tablets) e sem suporte a backdrop-filter, o blur é dispensado
-   e o fundo fica um pouco mais opaco: o custo vai a zero e a leitura se mantém. */
-const frosted = css`
-  -webkit-backdrop-filter: blur(5px);
-  backdrop-filter: blur(5px);
-
-  @media (pointer: coarse), (prefers-reduced-transparency: reduce) {
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
-    background-color: rgba(20, 22, 28, 0.78);
-  }
-
-  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-    background-color: rgba(20, 22, 28, 0.78);
-  }
-`;
-
+/* Vidro translúcido sem backdrop-filter: o fundo do app é estático e escuro, então um fundo
+   semitransparente entrega o mesmo visual sem o custo de GPU do blur em dezenas de elementos. */
 export const glass = css`
   background: linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02)), rgba(20, 22, 28, 0.45);
   border: 1px solid ${colors.border};
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 4px 16px rgba(0, 0, 0, 0.16);
-  ${frosted}
 `;
 
 export const liquidGlass = css`
   background: rgba(20, 22, 28, 0.42);
   border: 1px solid rgba(255, 255, 255, 0.14);
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
-  ${frosted}
 `;
 
 export const glassFlat = css`
